@@ -1,0 +1,219 @@
+<!DOCTYPE HTML>
+<!--
+	Hielo by TEMPLATED
+	templated.co @templatedco
+	Released for free under the Creative Commons Attribution 3.0 license (templated.co/license)
+-->
+<html>
+	<head>
+		<title>SECUZER</title>
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+	</head>
+	<body class="subpage">
+
+		<!-- Header -->
+			<header id="header">
+				<div class="logo"><a href="index.html">SECU <span>ZER</span></a></div>
+				<a href="#menu">Menu</a>
+			</header>
+
+		<!-- Nav -->
+			<nav id="menu">
+				<ul class="links">
+					<li><a href="index.html">Home</a></li>
+					<li><a href="generic.html">About <i>SECUZER</i></a></li>
+					<li><a href="elements.html"><i>ARDUINO</i> Code</a></li>
+				</ul>
+			</nav>
+
+		<!-- One -->
+			<section id="One" class="wrapper style3">
+				<div class="inner">
+					<header class="align-center">
+						<p>The code we used in</p>
+						<h2>Arduino</h2>
+					</header>
+				</div>
+			</section>
+
+		<!-- Two -->
+			<section id="two" class="wrapper style2">
+				<div class="inner">
+					<div class="box">
+						<div class="content">
+							<header class="align-center">
+								<p>ARDUINO</p>
+								<h2>Code</h2>
+							</header><p>
+							const int triggeredLED = 7;
+const int triggeredLED2 = 8;
+const int RedLED = 4;        
+const int GreenLED = 5;      
+const int inputPin = A0;     
+const int speakerPin = 12;  
+const int armButton = 6;     
+<br>
+boolean isArmed = true;      
+boolean isTriggered = false;
+int buttonVal = 0;           
+int prev_buttonVal = 0;     
+int reading = 0;             
+int threshold = 0;           
+<br>
+
+const int lowrange = 2000;   
+const int highrange = 4000; 
+<br>
+void setup(){
+  <br>
+  pinMode(triggeredLED, OUTPUT);
+  pinMode(triggeredLED2, OUTPUT);
+  pinMode(RedLED, OUTPUT);
+  pinMode(GreenLED, OUTPUT);
+  pinMode(armButton, INPUT);
+  digitalWrite(triggeredLED, HIGH);
+  delay(500);
+  digitalWrite(triggeredLED, LOW);  
+<br>
+   calibrate();
+   setArmedState();  
+}<br>
+
+void loop(){
+<br>
+ 
+  reading = analogRead(inputPin);
+
+ <br>
+  int buttonVal = digitalRead(armButton);
+  if ((buttonVal == HIGH) &and;&and; (prev_buttonVal == LOW)){
+    setArmedState();
+    delay(500);
+  }
+<br>
+  if ((isArmed) &and;&and; (reading < threshold)){
+    isTriggered = true;}
+<br>
+  if (isTriggered){
+
+     for (int i = lowrange; i <= highrange; i++)
+    {
+      tone (speakerPin, i, 250);
+    }
+   <br>
+    for (int i = highrange; i >= lowrange; i--)
+    {
+      tone (speakerPin, i, 250);
+    }
+<br>
+ 
+    digitalWrite(triggeredLED, HIGH);
+    delay(50);
+    digitalWrite(triggeredLED, LOW);
+    delay (50);
+    digitalWrite(triggeredLED2, HIGH);
+    delay (50);
+    digitalWrite(triggeredLED2, LOW);
+    delay (50);
+    }
+
+  delay(20);
+}
+<br>
+void setArmedState(){
+<br>
+  if (isArmed){
+    digitalWrite(GreenLED, HIGH);
+    digitalWrite(RedLED, LOW);
+    isTriggered = false;
+    isArmed = false;
+  } <br>else {
+    digitalWrite(GreenLED, LOW);
+    digitalWrite(RedLED, HIGH);
+    tone(speakerPin, 220, 125);
+    delay(200);
+    tone(speakerPin, 196, 250);
+    isArmed = true;
+  } 
+}<br>
+
+void calibrate(){
+<br>
+  int sample = 0;             
+  int baseline = 0;            
+  const int min_diff = 200; 
+  const int sensitivity = 50;
+  int success_count = 0;
+  <br>
+  digitalWrite(RedLED, LOW);
+  digitalWrite(GreenLED, LOW);
+
+  for (int i=0; i<10; i++){
+    sample += analogRead(inputPin);
+    digitalWrite(GreenLED, HIGH);
+    delay (50);
+    digitalWrite(GreenLED, LOW);
+    delay (50); 
+  }
+
+  do
+  {
+    sample = analogRead(inputPin);    
+
+    if (sample > baseline + min_diff){
+      success_count++;
+      threshold += sample;
+<br>
+      digitalWrite(GreenLED, HIGH);
+      delay (100);                    
+      digitalWrite(GreenLED, LOW);
+      delay (100);                    
+    } else {
+      success_count = 0;             
+      threshold = 0;
+    }
+<br>
+  } while (success_count < 3);
+
+  threshold = (threshold/3) - sensitivity;
+
+  tone(speakerPin, 196, 250);
+  delay(200);
+  tone(speakerPin, 220, 125);
+}
+</p>
+
+<p><b>Check out our app also.</b></p>
+
+						</div>
+					</div>
+				</div>
+			</section>
+
+		<!-- Footer -->
+			<footer id="footer">
+				<div class="container">
+					<ul class="icons">
+						<li><a target="_blank" href="https://twitter.com/ThisIsNSH" class="icon fa-twitter"><span class="label">Twitter</span></a></li>
+						<li><a target="_blank" href="https://www.facebook.com/shivam.kapila.1?ref=br_rs" class="icon fa-facebook"><span class="label">Facebook</span></a></li>
+						
+						<li><a target="_blank" href="https://mail.google.com" class="icon fa-envelope-o"><span class="label">Email</span></a></li>
+						</ul>
+				</div>
+				<div class="copyright">
+					Nishant Singh Hada &copy; 2017. All rights reserved.<br><br>Shivam-Divyanshu-Amandeep-Rohit-Vineet-Shubam-Kshitij-Akhil
+				</div>
+			</footer>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/jquery.scrollex.min.js"></script>
+			<script src="assets/js/skel.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+
+	</body>
+</html>
